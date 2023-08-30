@@ -1,1 +1,1 @@
-project shell
+This is a shell basics repo
