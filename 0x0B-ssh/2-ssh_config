@@ -1,0 +1,7 @@
+# SSH Config File
+#
+Host web-01
+	Hostname 34.201.61.19
+	User ubuntu
+	PasswordAuthentication no
+	IdentityFile ~/.ssh/school
