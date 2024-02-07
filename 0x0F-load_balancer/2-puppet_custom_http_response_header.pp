@@ -1,27 +1,30 @@
-# Installs a Nginx server with custom HTTP header
+# Setup New Ubuntu server with nginx
+# and add a custom HTTP header
 
-exec { 'update':
-  command  => '/usr/bin/apt-get -y update',
-  provider => shell,
-  before   => Exec['install Nginx'],
+exec { 'update system':
+        command => '/usr/bin/apt-get update',
 }
 
-exec { 'install Nginx':
-  command  => '/usr/bin/apt-get -y install nginx',
-  provider => shell,
-  before   => Exec['add_header'],
+package { 'nginx':
+	ensure => 'installed',
+	require => Exec['update system']
 }
 
-$hostname = $::hostname
-
-exec { 'add_header':
-  command     => '/usr/bin/sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOST\";/" /etc/nginx/nginx.conf',
-  provider    => shell,
-  environment => ["HOST=${hostname}"],
-  before      => Exec['restart Nginx'],
+file {'/var/www/html/index.html':
+	content => 'Hello World!'
 }
 
-exec { 'restart Nginx':
-  command  => '/usr/sbin/service nginx restart',
-  provider => shell,
+exec {'redirect_me':
+	command => 'sed -i "24i\	rewrite ^/redirect_me https://th3-gr00t.tk/ permanent;" /etc/nginx/sites-available/default',
+	provider => 'shell'
+}
+
+exec {'HTTP header':
+	command => 'sed -i "25i\	add_header X-Served-By \$hostname;" /etc/nginx/sites-available/default',
+	provider => 'shell'
+}
+
+service {'nginx':
+	ensure => running,
+	require => Package['nginx']
 }
