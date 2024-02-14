@@ -1,1 +1,2 @@
-0x14. MySQL
+Install MYSQL
+Install Mysql Server on both servers
