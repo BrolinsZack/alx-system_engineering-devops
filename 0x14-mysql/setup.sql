@@ -9,4 +9,4 @@ CREATE USER replica_user@'%' IDENTIFIED BY "replica_user";
 GRANT REPLICATION SLAVE ON *.* TO 'replica_user'@'%';
 GRANT SELECT ON mysql.user TO holberton_user@localhost;
 CREATE USER web02@34.227.101.160 IDENTIFIED BY "web02";
-GRANT REPLICATION SLAVE ON *.* TO web02@34.227.101.160;
+GRANT REPLICATION SLAVE ON *.* TO web02@3.90.82.194;
